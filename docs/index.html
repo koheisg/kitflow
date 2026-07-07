@@ -74,7 +74,9 @@
     .card h3 { margin-top: 0; }
     code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace; }
     pre {
-      overflow-x: auto;
+      overflow-x: visible;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
       background: var(--code);
       border: 1px solid var(--border);
       border-radius: .75rem;
