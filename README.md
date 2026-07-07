@@ -68,3 +68,13 @@ Remote commands use `origin` by default. Override it with:
 ```sh
 git config --local kitflow.remote upstream
 ```
+
+## AI agent skill
+
+This repository includes a reusable skill for AI coding agents:
+
+```text
+skills/kitflow/SKILL.md
+```
+
+Use it when an agent needs to operate GitFlow-style workflows with `kitflow`.
