@@ -113,6 +113,7 @@
       <div class="actions">
         <a class="button" href="https://github.com/koheisg/kitflow">View on GitHub</a>
         <a class="button secondary" href="#use-cases-en">Explore use cases</a>
+        <a class="button secondary" href="#skill-en">Agent skill guide</a>
       </div>
     </div>
 
@@ -123,6 +124,7 @@
       <div class="actions">
         <a class="button" href="https://github.com/koheisg/kitflow">GitHubを見る</a>
         <a class="button secondary" href="#use-cases-ja">ユースケースを見る</a>
+        <a class="button secondary" href="#skill-ja">Skillの使い方</a>
       </div>
     </div>
   </header>
@@ -254,6 +256,55 @@ kitflow status</code></pre>
             <p>It documents when to use kitflow, what safety checks to run, and how to verify branch operations.</p>
           </article>
         </div>
+      </section>
+
+      <section id="skill-en">
+        <h2>AI agent skill guide</h2>
+        <p><code>kitflow</code> includes a reusable skill for AI coding agents at <code>skills/kitflow/SKILL.md</code>. Use it when you want an agent to operate GitFlow-style workflows with the same safety checks every time.</p>
+
+        <h3>What the skill teaches an agent</h3>
+        <div class="grid">
+          <article class="card">
+            <h3>When to use kitflow</h3>
+            <p>The skill tells the agent to use kitflow for GitFlow-style tasks: initialize config, start/finish/list feature, release, or hotfix branches, publish branches, track remote branches, and check status.</p>
+          </article>
+          <article class="card">
+            <h3>Safety checks first</h3>
+            <p>Before branch changes, merges, tags, deletes, or pushes, the skill instructs the agent to inspect the repository state.</p>
+            <pre><code>git status --short
+git branch --show-current
+git log --oneline -5</code></pre>
+          </article>
+          <article class="card">
+            <h3>Verification after actions</h3>
+            <p>After branch-changing commands, the skill tells the agent to verify current state and upstream tracking when relevant.</p>
+            <pre><code>kitflow status
+git rev-parse --abbrev-ref HEAD@{upstream}</code></pre>
+          </article>
+        </div>
+
+        <h3>How to add the skill to an agent</h3>
+        <p>Exact installation depends on the AI coding agent. For agents that support file-based skills, copy or reference the included skill directory:</p>
+        <pre><code>skills/kitflow/SKILL.md</code></pre>
+        <p>If your agent keeps skills in a global directory, copy the whole directory there:</p>
+        <pre><code>cp -R skills/kitflow /path/to/your/agent/skills/</code></pre>
+        <p>If your agent supports project-local skills, keep <code>skills/kitflow/SKILL.md</code> in the repository and tell the agent to use the kitflow skill.</p>
+
+        <h3>Example prompts for agents</h3>
+        <pre><code>Use the kitflow skill and start a feature branch named login.
+Use kitflow to finish the current feature after checking the working tree.
+Use the kitflow skill to prepare release 1.4.0.
+Use kitflow to publish this release branch and verify upstream tracking.
+Use kitflow to create hotfix 1.4.1 from main.</code></pre>
+
+        <h3>Expected agent behavior</h3>
+        <ul>
+          <li>Check that the working tree is clean before changing branches.</li>
+          <li>Use <code>kitflow --dry-run</code> when you ask for a preview.</li>
+          <li>Run the matching <code>kitflow</code> command instead of hand-writing a sequence of Git commands.</li>
+          <li>Stop and ask you what to do if local changes would be affected.</li>
+          <li>Verify the branch, status, and upstream after the operation.</li>
+        </ul>
       </section>
 
       <section id="recipes-en">
@@ -446,6 +497,55 @@ kitflow status</code></pre>
             <p>エージェントへ「kitflowでfeature開始して」などと依頼した時の手順・安全確認を明文化できます。</p>
           </article>
         </div>
+      </section>
+
+      <section id="skill-ja">
+        <h2>AIエージェント向けSkillの使い方</h2>
+        <p><code>kitflow</code> にはAI coding agent向けの再利用可能なskillが <code>skills/kitflow/SKILL.md</code> に含まれています。エージェントにGitFlow風の操作を任せる時、安全確認と実行手順を毎回そろえるために使います。</p>
+
+        <h3>Skillがエージェントに教えること</h3>
+        <div class="grid">
+          <article class="card">
+            <h3>いつkitflowを使うか</h3>
+            <p>初期化、feature / release / hotfix の開始・完了・一覧、branch公開、remote branch追跡、status確認などのGitFlow風タスクでkitflowを使うよう案内します。</p>
+          </article>
+          <article class="card">
+            <h3>先に安全確認する</h3>
+            <p>branch変更、merge、tag作成、branch削除、pushの前に、リポジトリ状態を確認するよう指示します。</p>
+            <pre><code>git status --short
+git branch --show-current
+git log --oneline -5</code></pre>
+          </article>
+          <article class="card">
+            <h3>操作後に検証する</h3>
+            <p>branch操作後は状態確認を行い、publish / track の後はupstream trackingも確認します。</p>
+            <pre><code>kitflow status
+git rev-parse --abbrev-ref HEAD@{upstream}</code></pre>
+          </article>
+        </div>
+
+        <h3>Skillをエージェントに追加する方法</h3>
+        <p>具体的な導入方法はAI coding agentごとに異なります。file-based skillに対応している場合は、このskillディレクトリをコピーまたは参照します。</p>
+        <pre><code>skills/kitflow/SKILL.md</code></pre>
+        <p>エージェントがグローバルなskillsディレクトリを持つ場合は、ディレクトリごとコピーします。</p>
+        <pre><code>cp -R skills/kitflow /path/to/your/agent/skills/</code></pre>
+        <p>project-local skillに対応している場合は、リポジトリ内の <code>skills/kitflow/SKILL.md</code> をそのまま置き、「kitflow skillを使って」と依頼します。</p>
+
+        <h3>エージェントへの依頼例</h3>
+        <pre><code>kitflow skillを使って login feature branchを作って。
+作業ツリーを確認してから、現在のfeatureをkitflowでfinishして。
+kitflow skillを使って release 1.4.0 を準備して。
+このrelease branchをkitflowでpublishして、upstreamも確認して。
+mainから hotfix 1.4.1 をkitflowで作って。</code></pre>
+
+        <h3>期待するエージェントの動き</h3>
+        <ul>
+          <li>branchを変更する前に作業ツリーがcleanか確認する。</li>
+          <li>プレビューを頼まれた時は <code>kitflow --dry-run</code> を使う。</li>
+          <li>Gitコマンド列を手書きせず、該当する <code>kitflow</code> コマンドを使う。</li>
+          <li>ローカル変更に影響が出そうな場合は止まってユーザーに確認する。</li>
+          <li>操作後にbranch、status、upstreamを検証する。</li>
+        </ul>
       </section>
 
       <section id="recipes-ja">
