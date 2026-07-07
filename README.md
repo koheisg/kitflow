@@ -10,6 +10,7 @@ With Homebrew:
 
 ```sh
 brew tap koheisg/tap
+brew trust --formula koheisg/tap/kitflow
 brew install kitflow
 ```
 
