@@ -6,6 +6,15 @@ Website: https://koheisg.github.io/kitflow/
 
 ## Install
 
+With Homebrew:
+
+```sh
+brew tap koheisg/tap
+brew install kitflow
+```
+
+With Go:
+
 ```sh
 go install github.com/koheisg/kitflow@latest
 ```
