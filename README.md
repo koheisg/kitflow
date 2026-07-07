@@ -2,6 +2,8 @@
 
 A small GitFlow-style workflow helper written in Go.
 
+Website: https://koheisg.github.io/kitflow/
+
 ## Install
 
 ```sh
