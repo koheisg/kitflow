@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ja">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -29,6 +29,25 @@
     a { color: var(--accent); }
     header, main, footer { max-width: 1120px; margin: 0 auto; padding: 2rem; }
     header { padding-top: 5rem; padding-bottom: 3rem; }
+    .topbar { display: flex; justify-content: flex-end; margin-bottom: 2rem; }
+    .language-switch {
+      display: inline-flex;
+      gap: .35rem;
+      padding: .25rem;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: rgba(15,23,42,.45);
+    }
+    .language-switch button {
+      border: 0;
+      border-radius: 999px;
+      padding: .45rem .8rem;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .language-switch button[aria-pressed="true"] { background: var(--accent); color: #082f49; }
     .eyebrow { color: var(--accent-2); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
     h1 { font-size: clamp(2.6rem, 8vw, 5rem); line-height: 1; margin: .5rem 0 1rem; }
     h2 { font-size: 2rem; margin-top: 3rem; border-top: 1px solid var(--border); padding-top: 2rem; }
@@ -68,159 +87,180 @@
     th, td { border: 1px solid var(--border); padding: .7rem; vertical-align: top; }
     th { background: var(--panel-2); text-align: left; }
     footer { color: var(--muted); padding-bottom: 4rem; }
+    .lang[hidden] { display: none; }
     @media (prefers-color-scheme: light) {
       :root { --bg: #f8fafc; --panel: #fff; --panel-2: #e2e8f0; --text: #0f172a; --muted: #475569; --border: #cbd5e1; --code: #0f172a; }
       body { background: radial-gradient(circle at top left, #dbeafe 0, transparent 32rem), var(--bg); }
       p.lead { color: #1e3a8a; }
       .card { background: rgba(255,255,255,.9); }
+      .language-switch { background: rgba(255,255,255,.7); }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="eyebrow">GitFlow-style CLI for Go users and AI agents</div>
-    <h1>kitflow</h1>
-    <p class="lead">GitFlowの定番操作を、小さなGo製CLIで安全に実行するためのツールです。feature / release / hotfix の作成、完了、公開、追跡をシンプルなコマンドで扱えます。</p>
-    <div class="actions">
-      <a class="button" href="https://github.com/koheisg/kitflow">GitHubを見る</a>
-      <a class="button secondary" href="#use-cases">ユースケースを見る</a>
+    <div class="topbar" aria-label="Language selector">
+      <div class="language-switch">
+        <button type="button" data-set-lang="en" aria-pressed="true">English</button>
+        <button type="button" data-set-lang="ja" aria-pressed="false">日本語</button>
+      </div>
+    </div>
+
+    <div class="lang lang-en" data-title="kitflow - GitFlow-style workflow helper" data-description="kitflow is a small GitFlow-style workflow helper written in Go. Learn installation, commands, and practical real-world use cases.">
+      <div class="eyebrow">GitFlow-style CLI for Go users and AI agents</div>
+      <h1>kitflow</h1>
+      <p class="lead">A small Go CLI for running classic GitFlow operations safely: create, finish, publish, track, and list feature, release, and hotfix branches.</p>
+      <div class="actions">
+        <a class="button" href="https://github.com/koheisg/kitflow">View on GitHub</a>
+        <a class="button secondary" href="#use-cases-en">Explore use cases</a>
+      </div>
+    </div>
+
+    <div class="lang lang-ja" data-title="kitflow - GitFlow-style workflow helper" data-description="kitflowはGo製の小さなGitFlow風ワークフローヘルパーです。インストール、コマンド、実践的な利用ユースケースを紹介します。" hidden>
+      <div class="eyebrow">GoユーザーとAIエージェント向け GitFlow-style CLI</div>
+      <h1>kitflow</h1>
+      <p class="lead">GitFlowの定番操作を、小さなGo製CLIで安全に実行するためのツールです。feature / release / hotfix の作成、完了、公開、追跡をシンプルなコマンドで扱えます。</p>
+      <div class="actions">
+        <a class="button" href="https://github.com/koheisg/kitflow">GitHubを見る</a>
+        <a class="button secondary" href="#use-cases-ja">ユースケースを見る</a>
+      </div>
     </div>
   </header>
 
   <main>
-    <section id="install">
-      <h2>インストール</h2>
-      <pre><code>go install github.com/koheisg/kitflow@latest</code></pre>
-      <p>ソースからビルドする場合:</p>
-      <pre><code>git clone https://github.com/koheisg/kitflow.git
+    <div class="lang lang-en">
+      <section id="install-en">
+        <h2>Install</h2>
+        <pre><code>go install github.com/koheisg/kitflow@latest</code></pre>
+        <p>Or build from source:</p>
+        <pre><code>git clone https://github.com/koheisg/kitflow.git
 cd kitflow
 go build -o kitflow .</code></pre>
-    </section>
+      </section>
 
-    <section id="quickstart">
-      <h2>最短の使い方</h2>
-      <pre><code>kitflow init
+      <section id="quickstart-en">
+        <h2>Quick start</h2>
+        <pre><code>kitflow init
 kitflow feature start login
 # edit, test, commit
 kitflow feature finish login
 kitflow release start 1.0.0
 # final checks
 kitflow release finish 1.0.0</code></pre>
-      <p class="note">変更系コマンドは作業ツリーがcleanであることを要求します。意図しない変更を巻き込まないためです。</p>
-    </section>
+        <p class="note">Commands that change branches require a clean working tree so unrelated local changes are not accidentally carried into merges.</p>
+      </section>
 
-    <section id="commands">
-      <h2>コマンド一覧</h2>
-      <table>
-        <thead><tr><th>目的</th><th>コマンド</th><th>結果</th></tr></thead>
-        <tbody>
-          <tr><td>初期化</td><td><code>kitflow init</code></td><td>ローカルGit configを保存し、可能なら<code>develop</code>を作成</td></tr>
-          <tr><td>feature開始</td><td><code>kitflow feature start &lt;name&gt; [&lt;base&gt;]</code></td><td><code>develop</code>または指定baseから<code>feature/&lt;name&gt;</code>を作成</td></tr>
-          <tr><td>feature完了</td><td><code>kitflow feature finish [name]</code></td><td><code>develop</code>へno-ff mergeし、featureブランチを削除</td></tr>
-          <tr><td>release開始</td><td><code>kitflow release start &lt;version&gt; [&lt;base&gt;]</code></td><td><code>develop</code>または指定baseから<code>release/&lt;version&gt;</code>を作成</td></tr>
-          <tr><td>release完了</td><td><code>kitflow release finish &lt;version&gt;</code></td><td><code>main</code>と<code>develop</code>へmergeし、注釈付きtagを作成</td></tr>
-          <tr><td>hotfix開始</td><td><code>kitflow hotfix start &lt;version&gt; [&lt;base&gt;]</code></td><td><code>main</code>または指定baseから<code>hotfix/&lt;version&gt;</code>を作成</td></tr>
-          <tr><td>hotfix完了</td><td><code>kitflow hotfix finish &lt;version&gt;</code></td><td><code>main</code>と<code>develop</code>へmergeし、注釈付きtagを作成</td></tr>
-          <tr><td>公開</td><td><code>kitflow feature publish [name]</code></td><td>branchをremoteへpushし、upstreamを設定</td></tr>
-          <tr><td>追跡</td><td><code>kitflow feature track &lt;name&gt;</code></td><td>remote branchをtrackingするlocal branchを作成</td></tr>
-          <tr><td>確認</td><td><code>kitflow status</code></td><td>main/develop/prefix/current branchを表示</td></tr>
-        </tbody>
-      </table>
-    </section>
+      <section id="commands-en">
+        <h2>Command reference</h2>
+        <table>
+          <thead><tr><th>Goal</th><th>Command</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>Initialize</td><td><code>kitflow init</code></td><td>Stores local Git config and creates <code>develop</code> when possible.</td></tr>
+            <tr><td>Start a feature</td><td><code>kitflow feature start &lt;name&gt; [&lt;base&gt;]</code></td><td>Creates <code>feature/&lt;name&gt;</code> from <code>develop</code> or the supplied base branch.</td></tr>
+            <tr><td>Finish a feature</td><td><code>kitflow feature finish [name]</code></td><td>Merges into <code>develop</code> with <code>--no-ff</code> and deletes the local feature branch.</td></tr>
+            <tr><td>Start a release</td><td><code>kitflow release start &lt;version&gt; [&lt;base&gt;]</code></td><td>Creates <code>release/&lt;version&gt;</code> from <code>develop</code> or the supplied base branch.</td></tr>
+            <tr><td>Finish a release</td><td><code>kitflow release finish &lt;version&gt;</code></td><td>Merges into <code>main</code> and <code>develop</code>, creates an annotated tag, then deletes the release branch.</td></tr>
+            <tr><td>Start a hotfix</td><td><code>kitflow hotfix start &lt;version&gt; [&lt;base&gt;]</code></td><td>Creates <code>hotfix/&lt;version&gt;</code> from <code>main</code> or the supplied base branch.</td></tr>
+            <tr><td>Finish a hotfix</td><td><code>kitflow hotfix finish &lt;version&gt;</code></td><td>Merges into <code>main</code> and <code>develop</code>, creates an annotated tag, then deletes the hotfix branch.</td></tr>
+            <tr><td>Publish a branch</td><td><code>kitflow feature publish [name]</code></td><td>Pushes the branch to the configured remote and sets upstream tracking. Release and hotfix publish commands work the same way.</td></tr>
+            <tr><td>Track a remote branch</td><td><code>kitflow feature track &lt;name&gt;</code></td><td>Creates a local tracking branch from the configured remote. Release tracking works the same way.</td></tr>
+            <tr><td>Check state</td><td><code>kitflow status</code></td><td>Prints main/develop branch names, prefixes, and the current branch.</td></tr>
+          </tbody>
+        </table>
+      </section>
 
-    <section id="use-cases">
-      <h2>実際の利用ユースケース</h2>
-
-      <div class="grid">
-        <article class="card">
-          <h3>1. 新機能を安全に開発する</h3>
-          <p>ログイン、検索、通知など、通常の機能追加を<code>develop</code>から分離します。</p>
-          <pre><code>kitflow feature start login
+      <section id="use-cases-en">
+        <h2>Practical use cases</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>1. Develop a new feature safely</h3>
+            <p>Keep ordinary product work such as login, search, or notifications isolated from <code>develop</code> until it is ready.</p>
+            <pre><code>kitflow feature start login
 # implement login
 # run tests
 git add .
 git commit -m "Add login feature"
 kitflow feature finish login</code></pre>
-          <p class="flow">feature/login → develop</p>
-        </article>
+            <p class="flow">feature/login → develop</p>
+          </article>
 
-        <article class="card">
-          <h3>2. Pull Request用にfeatureを公開する</h3>
-          <p>レビュー前にremoteへpushし、upstream trackingも同時に設定します。</p>
-          <pre><code>kitflow feature start search
+          <article class="card">
+            <h3>2. Publish a feature for pull request review</h3>
+            <p>Push the branch to the remote and set upstream tracking in one step.</p>
+            <pre><code>kitflow feature start search
 # commit changes
 kitflow feature publish search</code></pre>
-          <p>GitHub上で<code>feature/search</code>からPRを作成できます。</p>
-        </article>
+            <p>You can then open a pull request from <code>feature/search</code> to <code>develop</code>.</p>
+          </article>
 
-        <article class="card">
-          <h3>3. 他人が作ったfeatureを引き継ぐ</h3>
-          <p>remote branchをローカルにtracking branchとして作成します。</p>
-          <pre><code>git fetch origin
+          <article class="card">
+            <h3>3. Take over someone else's feature branch</h3>
+            <p>Create a local tracking branch from an existing remote feature branch.</p>
+            <pre><code>git fetch origin
 kitflow feature track payment</code></pre>
-          <p>ペア開発や担当交代で便利です。</p>
-        </article>
+            <p>Useful for pair programming, handoffs, and support rotation.</p>
+          </article>
 
-        <article class="card">
-          <h3>4. リリース準備ブランチを切る</h3>
-          <p>リリース前のバージョン調整、CHANGELOG更新、最終QAを<code>release/</code>で行います。</p>
-          <pre><code>kitflow release start 1.2.0
+          <article class="card">
+            <h3>4. Prepare a release candidate</h3>
+            <p>Use a release branch for version bumps, changelog updates, documentation, QA fixes, and final verification.</p>
+            <pre><code>kitflow release start 1.2.0
 # update version, changelog, docs
 git commit -m "Prepare 1.2.0 release"
 kitflow release finish 1.2.0</code></pre>
-          <p class="flow">release/1.2.0 → main + develop + tag 1.2.0</p>
-        </article>
+            <p class="flow">release/1.2.0 → main + develop + tag 1.2.0</p>
+          </article>
 
-        <article class="card">
-          <h3>5. 本番障害をhotfixで即修正する</h3>
-          <p><code>develop</code>の未リリース変更を含めず、<code>main</code>から緊急修正します。</p>
-          <pre><code>kitflow hotfix start 1.2.1
+          <article class="card">
+            <h3>5. Patch production without unreleased changes</h3>
+            <p>Start from <code>main</code> so unfinished work in <code>develop</code> does not leak into an urgent fix.</p>
+            <pre><code>kitflow hotfix start 1.2.1
 # fix production bug
 git commit -m "Fix session timeout"
 kitflow hotfix finish 1.2.1</code></pre>
-          <p class="flow">hotfix/1.2.1 → main + develop + tag 1.2.1</p>
-        </article>
+            <p class="flow">hotfix/1.2.1 → main + develop + tag 1.2.1</p>
+          </article>
 
-        <article class="card">
-          <h3>6. 過去の安定版からパッチを作る</h3>
-          <p>保守ブランチなど、標準base以外から開始したい場合は第2引数でbaseを指定します。</p>
-          <pre><code>git checkout -b support/1.1 1.1.5
+          <article class="card">
+            <h3>6. Patch an older supported line</h3>
+            <p>Pass an explicit base branch when maintaining multiple stable versions.</p>
+            <pre><code>git checkout -b support/1.1 1.1.5
 kitflow hotfix start 1.1.6 support/1.1</code></pre>
-          <p>複数バージョンを保守するライブラリやCLIで使えます。</p>
-        </article>
+            <p>Useful for CLIs, libraries, and products with long-term support branches.</p>
+          </article>
 
-        <article class="card">
-          <h3>7. release branchをチームに共有する</h3>
-          <p>QA担当やドキュメント担当が同じrelease branchへ参加できます。</p>
-          <pre><code>kitflow release start 2.0.0
+          <article class="card">
+            <h3>7. Share a release branch with QA</h3>
+            <p>Publish a release branch so QA, documentation, and release engineering can collaborate.</p>
+            <pre><code>kitflow release start 2.0.0
 kitflow release publish 2.0.0</code></pre>
-          <p>別メンバーは<code>kitflow release track 2.0.0</code>で参加できます。</p>
-        </article>
+            <p>Another teammate can join with <code>kitflow release track 2.0.0</code>.</p>
+          </article>
 
-        <article class="card">
-          <h3>8. 作業前に何が残っているか確認する</h3>
-          <p>長期ブランチが増えたときに種類ごとに棚卸しします。</p>
-          <pre><code>kitflow feature list
+          <article class="card">
+            <h3>8. Audit active flow branches</h3>
+            <p>List outstanding feature, release, and hotfix branches before planning a release.</p>
+            <pre><code>kitflow feature list
 kitflow release list
 kitflow hotfix list
 kitflow status</code></pre>
-          <p>リリース前のブランチ整理に便利です。</p>
-        </article>
+            <p>Helpful before release freezes, sprint reviews, and cleanup days.</p>
+          </article>
 
-        <article class="card">
-          <h3>9. AIエージェントに安全にGitFlow操作させる</h3>
-          <p>このリポジトリにはAI coding agent向けskillも含まれています。</p>
-          <pre><code>skills/kitflow/SKILL.md</code></pre>
-          <p>エージェントへ「kitflowでfeature開始して」などと依頼した時の手順・安全確認を明文化できます。</p>
-        </article>
-      </div>
-    </section>
+          <article class="card">
+            <h3>9. Give AI agents a safe GitFlow playbook</h3>
+            <p>The repository includes a reusable skill file for AI coding agents.</p>
+            <pre><code>skills/kitflow/SKILL.md</code></pre>
+            <p>It documents when to use kitflow, what safety checks to run, and how to verify branch operations.</p>
+          </article>
+        </div>
+      </section>
 
-    <section id="recipes">
-      <h2>実務レシピ</h2>
+      <section id="recipes-en">
+        <h2>Real-world recipes</h2>
 
-      <h3>Solo開発: mainは常にリリース済みに保つ</h3>
-      <pre><code>kitflow init
+        <h3>Solo development: keep main always releasable</h3>
+        <pre><code>kitflow init
 kitflow feature start cli-help
 # implement
 git commit -am "Improve CLI help"
@@ -229,59 +269,285 @@ kitflow release start 0.2.0
 kitflow release finish 0.2.0
 git push origin main develop --tags</code></pre>
 
-      <h3>チーム開発: PRレビューを挟む</h3>
-      <pre><code>kitflow feature start oauth
+        <h3>Team development: review through pull requests</h3>
+        <pre><code>kitflow feature start oauth
 # commit changes
 kitflow feature publish oauth
 # open PR: feature/oauth -> develop
 # after review and merge policy approval
 kitflow feature finish oauth</code></pre>
 
-      <h3>リリース候補をQA環境へデプロイする</h3>
-      <pre><code>kitflow release start 3.4.0
+        <h3>Deploy a release candidate to QA</h3>
+        <pre><code>kitflow release start 3.4.0
 kitflow release publish 3.4.0
 # CI deploys release/3.4.0 to QA
 # after QA passes
 kitflow release finish 3.4.0
 git push origin main develop --tags</code></pre>
 
-      <h3>緊急バグ修正をdevelopへ戻し忘れない</h3>
-      <pre><code>kitflow hotfix start 3.4.1
+        <h3>Never forget to bring hotfixes back to develop</h3>
+        <pre><code>kitflow hotfix start 3.4.1
 # fix and test
 git commit -am "Fix billing webhook retry"
 kitflow hotfix finish 3.4.1
 git push origin main develop --tags</code></pre>
-      <p><code>hotfix finish</code>は<code>main</code>だけでなく<code>develop</code>にもmergeするため、修正の戻し忘れを防ぎます。</p>
-    </section>
+        <p><code>hotfix finish</code> merges into both <code>main</code> and <code>develop</code>, reducing the chance of losing the fix in future releases.</p>
+      </section>
 
-    <section id="config">
-      <h2>設定</h2>
-      <p><code>kitflow init</code>は以下のローカルGit configを使用します。</p>
-      <pre><code>git config --local kitflow.branch.main main
+      <section id="config-en">
+        <h2>Configuration</h2>
+        <p><code>kitflow init</code> uses local Git config values:</p>
+        <pre><code>git config --local kitflow.branch.main main
 git config --local kitflow.branch.develop develop
 git config --local kitflow.prefix.feature feature/
 git config --local kitflow.prefix.release release/
 git config --local kitflow.prefix.hotfix hotfix/</code></pre>
-      <p>remote名を変えたい場合:</p>
-      <pre><code>git config --local kitflow.remote upstream</code></pre>
-    </section>
+        <p>Change the remote name when needed:</p>
+        <pre><code>git config --local kitflow.remote upstream</code></pre>
+      </section>
 
-    <section id="safety">
-      <h2>安全に使うためのポイント</h2>
-      <ul>
-        <li>作業ツリーがdirtyな状態では、branch作成・finishなどの変更系コマンドは止まります。</li>
-        <li><code>--dry-run</code>で実行予定のGitコマンドを確認できます。</li>
-        <li><code>--verbose</code>でデバッグ用にGitコマンドを表示できます。</li>
-        <li>release / hotfix finishはannotated tagを作成します。既存tag名とは衝突できません。</li>
-        <li>merge conflictが起きた場合はGitの通常手順で解消してください。</li>
-      </ul>
-      <pre><code>kitflow --dry-run release finish 1.2.0
+      <section id="safety-en">
+        <h2>Safety notes</h2>
+        <ul>
+          <li>Branch-changing commands stop when the working tree is dirty.</li>
+          <li>Use <code>--dry-run</code> to preview Git write operations.</li>
+          <li>Use <code>--verbose</code> to print underlying Git commands while debugging.</li>
+          <li>Release and hotfix finish commands create annotated tags and fail if the tag already exists.</li>
+          <li>If a merge conflict happens, resolve it with normal Git conflict-resolution steps.</li>
+        </ul>
+        <pre><code>kitflow --dry-run release finish 1.2.0
 kitflow --verbose hotfix start 1.2.1</code></pre>
-    </section>
+      </section>
+    </div>
+
+    <div class="lang lang-ja" hidden>
+      <section id="install-ja">
+        <h2>インストール</h2>
+        <pre><code>go install github.com/koheisg/kitflow@latest</code></pre>
+        <p>ソースからビルドする場合:</p>
+        <pre><code>git clone https://github.com/koheisg/kitflow.git
+cd kitflow
+go build -o kitflow .</code></pre>
+      </section>
+
+      <section id="quickstart-ja">
+        <h2>最短の使い方</h2>
+        <pre><code>kitflow init
+kitflow feature start login
+# edit, test, commit
+kitflow feature finish login
+kitflow release start 1.0.0
+# final checks
+kitflow release finish 1.0.0</code></pre>
+        <p class="note">変更系コマンドは作業ツリーがcleanであることを要求します。意図しない変更を巻き込まないためです。</p>
+      </section>
+
+      <section id="commands-ja">
+        <h2>コマンド一覧</h2>
+        <table>
+          <thead><tr><th>目的</th><th>コマンド</th><th>結果</th></tr></thead>
+          <tbody>
+            <tr><td>初期化</td><td><code>kitflow init</code></td><td>ローカルGit configを保存し、可能なら<code>develop</code>を作成</td></tr>
+            <tr><td>feature開始</td><td><code>kitflow feature start &lt;name&gt; [&lt;base&gt;]</code></td><td><code>develop</code>または指定baseから<code>feature/&lt;name&gt;</code>を作成</td></tr>
+            <tr><td>feature完了</td><td><code>kitflow feature finish [name]</code></td><td><code>develop</code>へ<code>--no-ff</code>でmergeし、featureブランチを削除</td></tr>
+            <tr><td>release開始</td><td><code>kitflow release start &lt;version&gt; [&lt;base&gt;]</code></td><td><code>develop</code>または指定baseから<code>release/&lt;version&gt;</code>を作成</td></tr>
+            <tr><td>release完了</td><td><code>kitflow release finish &lt;version&gt;</code></td><td><code>main</code>と<code>develop</code>へmergeし、注釈付きtagを作成してreleaseブランチを削除</td></tr>
+            <tr><td>hotfix開始</td><td><code>kitflow hotfix start &lt;version&gt; [&lt;base&gt;]</code></td><td><code>main</code>または指定baseから<code>hotfix/&lt;version&gt;</code>を作成</td></tr>
+            <tr><td>hotfix完了</td><td><code>kitflow hotfix finish &lt;version&gt;</code></td><td><code>main</code>と<code>develop</code>へmergeし、注釈付きtagを作成してhotfixブランチを削除</td></tr>
+            <tr><td>公開</td><td><code>kitflow feature publish [name]</code></td><td>branchをremoteへpushし、upstreamを設定。release / hotfixも同様</td></tr>
+            <tr><td>追跡</td><td><code>kitflow feature track &lt;name&gt;</code></td><td>remote branchをtrackingするlocal branchを作成。releaseも同様</td></tr>
+            <tr><td>確認</td><td><code>kitflow status</code></td><td>main/develop/prefix/current branchを表示</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="use-cases-ja">
+        <h2>実際の利用ユースケース</h2>
+        <div class="grid">
+          <article class="card">
+            <h3>1. 新機能を安全に開発する</h3>
+            <p>ログイン、検索、通知など、通常の機能追加を<code>develop</code>から分離します。</p>
+            <pre><code>kitflow feature start login
+# implement login
+# run tests
+git add .
+git commit -m "Add login feature"
+kitflow feature finish login</code></pre>
+            <p class="flow">feature/login → develop</p>
+          </article>
+
+          <article class="card">
+            <h3>2. Pull Request用にfeatureを公開する</h3>
+            <p>レビュー前にremoteへpushし、upstream trackingも同時に設定します。</p>
+            <pre><code>kitflow feature start search
+# commit changes
+kitflow feature publish search</code></pre>
+            <p>GitHub上で<code>feature/search</code>から<code>develop</code>向けのPRを作成できます。</p>
+          </article>
+
+          <article class="card">
+            <h3>3. 他人が作ったfeatureを引き継ぐ</h3>
+            <p>remote branchをローカルにtracking branchとして作成します。</p>
+            <pre><code>git fetch origin
+kitflow feature track payment</code></pre>
+            <p>ペア開発、担当交代、サポート当番で便利です。</p>
+          </article>
+
+          <article class="card">
+            <h3>4. リリース準備ブランチを切る</h3>
+            <p>リリース前のバージョン調整、CHANGELOG更新、ドキュメント更新、最終QAを<code>release/</code>で行います。</p>
+            <pre><code>kitflow release start 1.2.0
+# update version, changelog, docs
+git commit -m "Prepare 1.2.0 release"
+kitflow release finish 1.2.0</code></pre>
+            <p class="flow">release/1.2.0 → main + develop + tag 1.2.0</p>
+          </article>
+
+          <article class="card">
+            <h3>5. 本番障害をhotfixで即修正する</h3>
+            <p><code>develop</code>の未リリース変更を含めず、<code>main</code>から緊急修正します。</p>
+            <pre><code>kitflow hotfix start 1.2.1
+# fix production bug
+git commit -m "Fix session timeout"
+kitflow hotfix finish 1.2.1</code></pre>
+            <p class="flow">hotfix/1.2.1 → main + develop + tag 1.2.1</p>
+          </article>
+
+          <article class="card">
+            <h3>6. 過去の安定版からパッチを作る</h3>
+            <p>保守ブランチなど、標準base以外から開始したい場合は第2引数でbaseを指定します。</p>
+            <pre><code>git checkout -b support/1.1 1.1.5
+kitflow hotfix start 1.1.6 support/1.1</code></pre>
+            <p>複数バージョンを保守するライブラリやCLIで使えます。</p>
+          </article>
+
+          <article class="card">
+            <h3>7. release branchをチームに共有する</h3>
+            <p>QA担当やドキュメント担当が同じrelease branchへ参加できます。</p>
+            <pre><code>kitflow release start 2.0.0
+kitflow release publish 2.0.0</code></pre>
+            <p>別メンバーは<code>kitflow release track 2.0.0</code>で参加できます。</p>
+          </article>
+
+          <article class="card">
+            <h3>8. 作業前に何が残っているか確認する</h3>
+            <p>長期ブランチが増えたときに種類ごとに棚卸しします。</p>
+            <pre><code>kitflow feature list
+kitflow release list
+kitflow hotfix list
+kitflow status</code></pre>
+            <p>リリース前のブランチ整理に便利です。</p>
+          </article>
+
+          <article class="card">
+            <h3>9. AIエージェントに安全にGitFlow操作させる</h3>
+            <p>このリポジトリにはAI coding agent向けskillも含まれています。</p>
+            <pre><code>skills/kitflow/SKILL.md</code></pre>
+            <p>エージェントへ「kitflowでfeature開始して」などと依頼した時の手順・安全確認を明文化できます。</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="recipes-ja">
+        <h2>実務レシピ</h2>
+
+        <h3>Solo開発: mainは常にリリース済みに保つ</h3>
+        <pre><code>kitflow init
+kitflow feature start cli-help
+# implement
+git commit -am "Improve CLI help"
+kitflow feature finish cli-help
+kitflow release start 0.2.0
+kitflow release finish 0.2.0
+git push origin main develop --tags</code></pre>
+
+        <h3>チーム開発: PRレビューを挟む</h3>
+        <pre><code>kitflow feature start oauth
+# commit changes
+kitflow feature publish oauth
+# open PR: feature/oauth -> develop
+# after review and merge policy approval
+kitflow feature finish oauth</code></pre>
+
+        <h3>リリース候補をQA環境へデプロイする</h3>
+        <pre><code>kitflow release start 3.4.0
+kitflow release publish 3.4.0
+# CI deploys release/3.4.0 to QA
+# after QA passes
+kitflow release finish 3.4.0
+git push origin main develop --tags</code></pre>
+
+        <h3>緊急バグ修正をdevelopへ戻し忘れない</h3>
+        <pre><code>kitflow hotfix start 3.4.1
+# fix and test
+git commit -am "Fix billing webhook retry"
+kitflow hotfix finish 3.4.1
+git push origin main develop --tags</code></pre>
+        <p><code>hotfix finish</code>は<code>main</code>だけでなく<code>develop</code>にもmergeするため、修正の戻し忘れを防ぎます。</p>
+      </section>
+
+      <section id="config-ja">
+        <h2>設定</h2>
+        <p><code>kitflow init</code>は以下のローカルGit configを使用します。</p>
+        <pre><code>git config --local kitflow.branch.main main
+git config --local kitflow.branch.develop develop
+git config --local kitflow.prefix.feature feature/
+git config --local kitflow.prefix.release release/
+git config --local kitflow.prefix.hotfix hotfix/</code></pre>
+        <p>remote名を変えたい場合:</p>
+        <pre><code>git config --local kitflow.remote upstream</code></pre>
+      </section>
+
+      <section id="safety-ja">
+        <h2>安全に使うためのポイント</h2>
+        <ul>
+          <li>作業ツリーがdirtyな状態では、branch作成・finishなどの変更系コマンドは止まります。</li>
+          <li><code>--dry-run</code>で実行予定のGitコマンドを確認できます。</li>
+          <li><code>--verbose</code>でデバッグ用にGitコマンドを表示できます。</li>
+          <li>release / hotfix finishはannotated tagを作成します。既存tag名とは衝突できません。</li>
+          <li>merge conflictが起きた場合はGitの通常手順で解消してください。</li>
+        </ul>
+        <pre><code>kitflow --dry-run release finish 1.2.0
+kitflow --verbose hotfix start 1.2.1</code></pre>
+      </section>
+    </div>
   </main>
 
   <footer>
-    <p>kitflow is open source on <a href="https://github.com/koheisg/kitflow">GitHub</a>.</p>
+    <p class="lang lang-en">kitflow is open source on <a href="https://github.com/koheisg/kitflow">GitHub</a>.</p>
+    <p class="lang lang-ja" hidden>kitflow is open source on <a href="https://github.com/koheisg/kitflow">GitHub</a>.</p>
   </footer>
+
+  <script>
+    const switchLanguage = (lang) => {
+      const active = lang === 'ja' ? 'ja' : 'en';
+      document.documentElement.lang = active;
+      document.querySelectorAll('.lang').forEach((element) => {
+        element.hidden = !element.classList.contains(`lang-${active}`);
+      });
+      document.querySelectorAll('[data-set-lang]').forEach((button) => {
+        button.setAttribute('aria-pressed', String(button.dataset.setLang === active));
+      });
+      const root = document.querySelector(`header .lang-${active}`);
+      if (root) {
+        document.title = root.dataset.title;
+        const description = document.querySelector('meta[name="description"]');
+        if (description) {
+          description.content = root.dataset.description;
+        }
+      }
+      localStorage.setItem('kitflow-lang', active);
+      if (location.hash.endsWith('-ja') || location.hash.endsWith('-en')) {
+        history.replaceState(null, '', location.pathname + location.search + location.hash.replace(/-(ja|en)$/, `-${active}`));
+      }
+    };
+
+    const params = new URLSearchParams(location.search);
+    const initialLanguage = params.get('lang') || localStorage.getItem('kitflow-lang') || 'en';
+    switchLanguage(initialLanguage);
+    document.querySelectorAll('[data-set-lang]').forEach((button) => {
+      button.addEventListener('click', () => switchLanguage(button.dataset.setLang));
+    });
+  </script>
 </body>
 </html>
