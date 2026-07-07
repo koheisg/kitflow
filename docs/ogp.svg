@@ -1,0 +1,64 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="heroGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(180 90) rotate(39.7) scale(690 520)">
+      <stop stop-color="#2563EB"/>
+      <stop offset="0.45" stop-color="#0F172A"/>
+      <stop offset="1" stop-color="#020617"/>
+    </radialGradient>
+    <radialGradient id="greenGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(975 500) rotate(150) scale(390 270)">
+      <stop stop-color="#22C55E" stop-opacity="0.65"/>
+      <stop offset="1" stop-color="#020617" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="card" x1="162" y1="98" x2="1038" y2="532" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#1E293B" stop-opacity="0.92"/>
+      <stop offset="1" stop-color="#0F172A" stop-opacity="0.86"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="172" y1="474" x2="1028" y2="474" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38BDF8"/>
+      <stop offset="0.52" stop-color="#22C55E"/>
+      <stop offset="1" stop-color="#38BDF8"/>
+    </linearGradient>
+    <filter id="shadow" x="120" y="60" width="960" height="520" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="24" stdDeviation="30" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+    <pattern id="grid" width="44" height="44" patternUnits="userSpaceOnUse">
+      <path d="M44 0H0V44" stroke="#94A3B8" stroke-opacity="0.10"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#020617"/>
+  <rect width="1200" height="630" fill="url(#heroGlow)"/>
+  <rect width="1200" height="630" fill="url(#greenGlow)"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.55"/>
+
+  <g filter="url(#shadow)">
+    <rect x="150" y="82" width="900" height="466" rx="40" fill="url(#card)" stroke="#334155" stroke-width="2"/>
+  </g>
+
+  <g opacity="0.72">
+    <circle cx="785" cy="208" r="13" fill="#38BDF8"/>
+    <circle cx="915" cy="208" r="13" fill="#22C55E"/>
+    <circle cx="915" cy="344" r="13" fill="#FBBF24"/>
+    <path d="M798 208H902" stroke="#38BDF8" stroke-width="7" stroke-linecap="round"/>
+    <path d="M915 221V331" stroke="#22C55E" stroke-width="7" stroke-linecap="round"/>
+    <path d="M785 221C785 284 833 344 902 344" stroke="#94A3B8" stroke-width="7" stroke-linecap="round"/>
+  </g>
+
+  <text x="204" y="174" fill="#22C55E" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="5">GITFLOW-STYLE CLI</text>
+  <text x="198" y="304" fill="#F8FAFC" font-family="Arial, Helvetica, sans-serif" font-size="112" font-weight="800" letter-spacing="-5">kitflow</text>
+  <text x="205" y="370" fill="#DBEAFE" font-family="Arial, Helvetica, sans-serif" font-size="38" font-weight="600">Workflow helper for Go users and AI agents</text>
+  <text x="205" y="420" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="28">feature / release / hotfix branches, safely automated</text>
+
+  <rect x="205" y="462" width="790" height="5" rx="2.5" fill="url(#accent)"/>
+
+  <g font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="700">
+    <rect x="205" y="493" width="144" height="42" rx="21" fill="#082F49" stroke="#38BDF8" stroke-width="1.5"/>
+    <text x="232" y="522" fill="#BAE6FD">feature</text>
+    <rect x="365" y="493" width="139" height="42" rx="21" fill="#052E16" stroke="#22C55E" stroke-width="1.5"/>
+    <text x="394" y="522" fill="#BBF7D0">release</text>
+    <rect x="520" y="493" width="127" height="42" rx="21" fill="#451A03" stroke="#FBBF24" stroke-width="1.5"/>
+    <text x="548" y="522" fill="#FDE68A">hotfix</text>
+  </g>
+
+  <text x="690" y="522" fill="#94A3B8" font-family="Arial, Helvetica, sans-serif" font-size="25" font-weight="600">github.com/koheisg/kitflow</text>
+</svg>
