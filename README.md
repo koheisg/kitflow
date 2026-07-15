@@ -14,6 +14,12 @@ brew trust --formula koheisg/tap/kitflow
 brew install kitflow
 ```
 
+This install path is verified with:
+
+```sh
+brew test kitflow
+```
+
 With Go:
 
 ```sh
